@@ -1,0 +1,11 @@
+.App {
+  text-align: center;
+}
+
+.App-container {
+  background-color: #282c34;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  height: 100%;
+}
