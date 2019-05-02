@@ -1,3 +1,5 @@
+import * as rasterizeHTML from "rasterizehtml";
+
 const structure = `
 <head>
 <style>
@@ -43,8 +45,8 @@ const HtmlTools = {
         //let regex = /<br\/>(.*?)<br\/>/g;
         let htmlValue = html
             .replace(/(?:\r\n|\r|\n)/g, '<br/>');
-            //.replace(regex, "<br/><span>$1</span><br/>")
-            //.replace(/<span><\/span>/g, "");
+        //.replace(regex, "<br/><span>$1</span><br/>")
+        //.replace(/<span><\/span>/g, "");
 
 
         let style = styles['base'];
@@ -61,6 +63,54 @@ const HtmlTools = {
     },
     convertToJpg(canvas) {
         return canvas.toDataURL("image/jpg");
+    },
+    /*
+    * parent: DOM element
+    * canvasId: id of the canvas DOM element
+    * html: html value to render in the canvas
+    * callback: action to execute
+    **/
+    createCanvasPreview(parent, canvasId, html, callback) {
+        let canvas = this.generatePreviewCanvas(parent, canvasId);
+        let context = canvas.getContext("2d");
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        console.log(html);
+        rasterizeHTML.drawHTML(html).then(function (renderResult) {
+            canvas.width = renderResult.image.width;
+            canvas.height = renderResult.image.height;
+            console.log(renderResult.image.width, renderResult.image.height);
+            context.drawImage(renderResult.image, 0, 0);
+            callback(true);
+        });
+    },
+    /*
+    * parent: DOM element
+    * canvasId: id of the canvas DOM element
+    **/
+    generatePreviewCanvas(parent, canvasId) {
+        let canvas = document.createElement("canvas");
+
+        canvas.id = canvasId;
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+        parent.appendChild(canvas);
+        return canvas;
+    },
+    /*
+    * canvas: DOM element
+    * fileName: download file's name
+    **/
+    generateDownloadImage(canvas, fileName) {
+        let imageData = HtmlTools.convertToJpg(canvas);
+        // create temporary link
+        let tmpLink = document.createElement('a');
+        tmpLink.download = fileName;
+        tmpLink.href = imageData;
+        // temporarily add link to body and initiate the download
+        document.body.appendChild(tmpLink);
+        tmpLink.click();
+        document.body.removeChild(tmpLink);
     }
 };
 export default HtmlTools;

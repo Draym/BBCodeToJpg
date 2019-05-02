@@ -3,7 +3,6 @@ import {Container, Col, Row} from 'react-bootstrap';
 import './Home.css';
 import BBCodeTools from "../../utils/BBCodeTools";
 import HtmlTools from "../../utils/HtmlTools";
-import * as rasterizeHTML from "rasterizehtml";
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import "react-tabs/style/react-tabs.css";
 import Button from "react-bootstrap/Button";
@@ -25,10 +24,12 @@ class Home extends React.Component {
         this.handleBBCodeChange = this.handleBBCodeChange.bind(this);
         this.handleConfigChange = this.handleConfigChange.bind(this);
         this.handleCustomStyleChange = this.handleCustomStyleChange.bind(this);
-        this.generatePreviewCanvas = this.generatePreviewCanvas.bind(this);
         this.createDownloadImage = this.createDownloadImage.bind(this);
     }
 
+    /*
+    ** HANDLE EVENT
+    **/
     handleBBCodeChange(event) {
         this.setState({bbcode: event.target.value});
     }
@@ -59,45 +60,18 @@ class Home extends React.Component {
         this.createHtmlPreview(finalHtml);
     }
 
+    /*
+    ** CREATE
+    **/
     createHtmlPreview(html) {
-        let canvas = this.generatePreviewCanvas();
-        let context = canvas.getContext("2d");
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        console.log(html);
-        rasterizeHTML.drawHTML(html).then(function (renderResult) {
-            canvas.width = renderResult.image.width;
-            canvas.height = renderResult.image.height;
-            console.log(renderResult.image.width, renderResult.image.height);
-            context.drawImage(renderResult.image, 0, 0);
-            this.setState({imageReady: true})
-        }.bind(this));
-    }
-
-    generatePreviewCanvas() {
-        let canvas = document.createElement("canvas");
         let parent = document.getElementById("react-tabs-3");
-
-        canvas.id = this.canvasId;
-        while (parent.firstChild) {
-            parent.removeChild(parent.firstChild);
-        }
-        parent.appendChild(canvas);
-        return canvas;
+        HtmlTools.createCanvasPreview(parent, this.canvasId, html, function(success) {
+            this.setState({imageReady: success});
+        }.bind(this))
     }
-
     createDownloadImage() {
         let canvas = document.getElementById(this.canvasId);
-        let imageData = HtmlTools.convertToJpg(canvas);
-
-        // create temporary link
-        let tmpLink = document.createElement('a');
-        tmpLink.download = this.fileName;
-        tmpLink.href = imageData;
-
-        // temporarily add link to body and initiate the download
-        document.body.appendChild(tmpLink);
-        tmpLink.click();
-        document.body.removeChild(tmpLink);
+        HtmlTools.generateDownloadImage(canvas, this.fileName);
     }
 
     render() {
