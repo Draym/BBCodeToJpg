@@ -3,8 +3,11 @@ import {Tag} from "bbcode-to-react";
 
 class AlignTag extends Tag {
     toReact() {
+        const attributes = {
+            align: this.params.align || null
+        };
         return (
-            <div className="center">{this.getComponents()}</div>
+            <div className={attributes.align}>{this.getComponents()}</div>
         );
     }
 }

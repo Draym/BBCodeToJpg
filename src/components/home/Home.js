@@ -10,22 +10,27 @@ import Button from "react-bootstrap/Button";
 
 class Home extends React.Component {
 
+    canvasId = 'jpgPreview';
+    fileName = 'bbcode2img.jpg';
+
     constructor(props) {
         super(props);
         this.state = {
             value: '',
             config: '',
-            customStyle: '',
+            customStyle: HtmlTools.getBaseStyle(),
             imageReady: false
         };
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleAreaChange = this.handleAreaChange.bind(this);
+        this.handleBBCodeChange = this.handleBBCodeChange.bind(this);
         this.handleConfigChange = this.handleConfigChange.bind(this);
         this.handleCustomStyleChange = this.handleCustomStyleChange.bind(this);
+        this.generatePreviewCanvas = this.generatePreviewCanvas.bind(this);
+        this.createDownloadImage = this.createDownloadImage.bind(this);
     }
 
-    handleAreaChange(event) {
-        this.setState({value: event.target.value});
+    handleBBCodeChange(event) {
+        this.setState({bbcode: event.target.value});
     }
 
     handleConfigChange(event) {
@@ -38,7 +43,17 @@ class Home extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        let html = BBCodeTools.convertToHtml(this.state.value);
+
+        if (this.state.config === 'custom' && this.state.customStyle.indexOf("<script") >= 0) {
+            let input = document.getElementById('customStyleArea');
+            input.classList.add("textAreaError");
+            return;
+        } else {
+            let input = document.getElementById('customStyleArea');
+            input.classList.remove("textAreaError");
+        }
+
+        let html = BBCodeTools.convertToHtml(this.state.bbcode);
         let finalHtml = HtmlTools.addStyling(html, this.state.config, this.state.customStyle);
         this.setState({htmlPreview: finalHtml});
         this.createHtmlPreview(finalHtml);
@@ -62,6 +77,7 @@ class Home extends React.Component {
         let canvas = document.createElement("canvas");
         let parent = document.getElementById("react-tabs-3");
 
+        canvas.id = this.canvasId;
         while (parent.firstChild) {
             parent.removeChild(parent.firstChild);
         }
@@ -70,15 +86,14 @@ class Home extends React.Component {
     }
 
     createDownloadImage() {
-        let canvas = document.getElementById("canvas");
+        let canvas = document.getElementById(this.canvasId);
         let imageData = HtmlTools.convertToJpg(canvas);
 
         // create temporary link
         let tmpLink = document.createElement('a');
-        tmpLink.download = 'bbcode2img.jpg';
+        tmpLink.download = this.fileName;
         tmpLink.href = imageData;
 
-        console.log("hein");
         // temporarily add link to body and initiate the download
         document.body.appendChild(tmpLink);
         tmpLink.click();
@@ -95,24 +110,25 @@ class Home extends React.Component {
                     <Row>
                         <Col>
                             <form onSubmit={this.handleSubmit}>
-                                <label htmlFor="bbcodeArea">
-                                    BBCode:
-                                    <textarea id="bbcodeArea" value={this.state.value}
-                                              onChange={this.handleAreaChange}/>
+                                <label className="form-bbcode">
+                                    <span>BBCode:</span>
+                                    <textarea value={this.state.bbcode}
+                                              onChange={this.handleBBCodeChange}/>
                                 </label>
-                                <label>
-                                    Add configuration:
+                                <label className="form-conf">
+                                    <span>Add configuration:</span>
                                     <select value={this.state.config} onChange={this.handleConfigChange}>
                                         <option value="">none</option>
                                         <option value="ogame">Forum</option>
                                         <option value="custom">custom</option>
                                     </select>
                                 </label>
-                                <label style={{visibility: this.state.config === 'custom' ? 'visible' : 'hidden'}}>
+                                <label
+                                    className={`form-customConf ${this.state.config === 'custom' ? null : 'hidden'}`}>
                                     Custom configuration:
-                                    <textarea value={this.state.customStyle} onChange={this.handleCustomStyleChange}/>
+                                    <textarea id="customStyleArea" value={this.state.customStyle} onChange={this.handleCustomStyleChange}/>
                                 </label>
-                                <input className="btn btn-outline-dark" type="submit" value="submit"/>
+                                <input className="form-submit btn btn-outline-info" type="submit" value="Generate Jpeg" disabled={!this.state.bbcode}/>
                             </form>
                         </Col>
                         <Col>
@@ -121,7 +137,6 @@ class Home extends React.Component {
                                     <Tab>HTML</Tab>
                                     <Tab>Jpeg preview</Tab>
                                 </TabList>
-
                                 <TabPanel>
                                     <textarea className="previewHtml" value={this.state.htmlPreview} readOnly/>
                                 </TabPanel>
@@ -132,7 +147,8 @@ class Home extends React.Component {
                     </Row>
                     <Row>
                         <Button variant="outline-info" className="right" type="button"
-                                style={{visibility: this.state.imageReady ? 'visible' : 'hidden' }} onClick={this.createDownloadImage}>Download image</Button>
+                                style={{visibility: this.state.imageReady ? 'visible' : 'hidden'}}
+                                onClick={this.createDownloadImage}>Download image</Button>
                     </Row>
                 </Container>
             </div>

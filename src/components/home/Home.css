@@ -27,3 +27,47 @@
     margin-top: 1em;
     margin-bottom: 2em;
 }
+
+form {
+    display: grid !important;
+}
+
+.form-bbcode {
+    display: grid !important;
+    margin-top: 25px;
+}
+
+.form-bbcode textarea {
+    min-height: 100px;
+}
+
+.form-conf {
+    margin-top: 30px;
+}
+
+.form-conf select{
+    margin-left: 10px;
+}
+
+.form-customConf {
+    display: grid !important;
+    margin-top: 15px;
+}
+
+.form-customConf textarea {
+    min-height: 110px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.form-submit {
+    margin-top: 30px;
+    width: 70%;
+    margin-left: 15%;
+}
+
+.textAreaError {
+    border-color: red;
+}
