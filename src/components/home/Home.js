@@ -4,6 +4,9 @@ import './Home.css';
 import BBCodeTools from "../../utils/BBCodeTools";
 import HtmlTools from "../../utils/HtmlTools";
 import * as rasterizeHTML from "rasterizehtml";
+import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
+import "react-tabs/style/react-tabs.css";
+import Button from "react-bootstrap/Button";
 
 class Home extends React.Component {
 
@@ -12,7 +15,8 @@ class Home extends React.Component {
         this.state = {
             value: '',
             config: '',
-            customStyle: ''
+            customStyle: '',
+            imageReady: false
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleAreaChange = this.handleAreaChange.bind(this);
@@ -36,12 +40,12 @@ class Home extends React.Component {
         event.preventDefault();
         let html = BBCodeTools.convertToHtml(this.state.value);
         let finalHtml = HtmlTools.addStyling(html, this.state.config, this.state.customStyle);
+        this.setState({htmlPreview: finalHtml});
         this.createHtmlPreview(finalHtml);
     }
 
     createHtmlPreview(html) {
-        let canvas = document.getElementById("canvas");
-        // clear
+        let canvas = this.generatePreviewCanvas();
         let context = canvas.getContext("2d");
         context.clearRect(0, 0, canvas.width, canvas.height);
         console.log(html);
@@ -50,30 +54,44 @@ class Home extends React.Component {
             canvas.height = renderResult.image.height;
             console.log(renderResult.image.width, renderResult.image.height);
             context.drawImage(renderResult.image, 0, 0);
-        });
+            this.setState({imageReady: true})
+        }.bind(this));
+    }
+
+    generatePreviewCanvas() {
+        let canvas = document.createElement("canvas");
+        let parent = document.getElementById("react-tabs-3");
+
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+        parent.appendChild(canvas);
+        return canvas;
     }
 
     createDownloadImage() {
         let canvas = document.getElementById("canvas");
-
         let imageData = HtmlTools.convertToJpg(canvas);
 
         // create temporary link
-        let tmpLink = document.createElement( 'a' );
+        let tmpLink = document.createElement('a');
         tmpLink.download = 'bbcode2img.jpg';
         tmpLink.href = imageData;
 
         console.log("hein");
         // temporarily add link to body and initiate the download
-        document.body.appendChild( tmpLink );
+        document.body.appendChild(tmpLink);
         tmpLink.click();
-        document.body.removeChild( tmpLink );
+        document.body.removeChild(tmpLink);
     }
 
     render() {
         return (
             <div>
                 <Container>
+                    <Row>
+                        <h1 className="center title">BBCode 2 Jpeg</h1>
+                    </Row>
                     <Row>
                         <Col>
                             <form onSubmit={this.handleSubmit}>
@@ -86,7 +104,7 @@ class Home extends React.Component {
                                     Add configuration:
                                     <select value={this.state.config} onChange={this.handleConfigChange}>
                                         <option value="">none</option>
-                                        <option value="ogame">Ogame RC</option>
+                                        <option value="ogame">Forum</option>
                                         <option value="custom">custom</option>
                                     </select>
                                 </label>
@@ -94,19 +112,27 @@ class Home extends React.Component {
                                     Custom configuration:
                                     <textarea value={this.state.customStyle} onChange={this.handleCustomStyleChange}/>
                                 </label>
-                                <input type="submit" value="submit"/>
+                                <input className="btn btn-outline-dark" type="submit" value="submit"/>
                             </form>
                         </Col>
-                    </Row>
-                    <Row>
                         <Col>
-                            <div className="preview">
-                                <canvas id="canvas"/>
-                            </div>
+                            <Tabs className="previewTab">
+                                <TabList>
+                                    <Tab>HTML</Tab>
+                                    <Tab>Jpeg preview</Tab>
+                                </TabList>
+
+                                <TabPanel>
+                                    <textarea className="previewHtml" value={this.state.htmlPreview} readOnly/>
+                                </TabPanel>
+                                <TabPanel>
+                                </TabPanel>
+                            </Tabs>
                         </Col>
                     </Row>
                     <Row>
-                        <input type="button" value="Download img" onClick={this.createDownloadImage}/>
+                        <Button variant="outline-info" className="right" type="button"
+                                style={{visibility: this.state.imageReady ? 'visible' : 'hidden' }} onClick={this.createDownloadImage}>Download image</Button>
                     </Row>
                 </Container>
             </div>

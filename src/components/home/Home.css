@@ -1,4 +1,29 @@
-.preview {
-    overflow-y: scroll;
+.center {
+    margin: auto;
+    text-align: center;
+}
+
+.right {
+    margin-left: auto;
+    text-align: center;
+}
+
+.previewTab {
     height: 500px;
+    width: 700px;
+}
+
+.previewHtml {
+    height: 400px;
+    width: 700px;
+}
+
+#react-tabs-3 {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.title {
+    margin-top: 1em;
+    margin-bottom: 2em;
 }
