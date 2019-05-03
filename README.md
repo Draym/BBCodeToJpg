@@ -1,6 +1,6 @@
 # BBCodeToJpg
 
-BBCodeToJpg is a static web-site created with Reactjs.
+BBCodeToJpg is a simple web tool created with Reactjs.
 
 It can convert a BBCode into HTML and render it within a downloadable image (jpg).
 
