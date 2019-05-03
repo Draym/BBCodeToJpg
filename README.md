@@ -4,12 +4,12 @@ BBCodeToJpg is a static web-site created with Reactjs.
 
 It can convert a BBCode into HTML and render it within a downloadable image (jpg).
 
------> [BBcode2Jpg](http://www.bbcode2jpg.draymlab.fr/)
+---->  [BBcode2Jpg](http://www.bbcode2jpg.draymlab.fr/)  <----
 
 <br/>
 
 -------------------------------------------------------------------------------------------
-### Functionalities & Improvements
+## Functionalities & Improvements
 
 - Custom Configuration
 
@@ -24,7 +24,7 @@ It can convert a BBCode into HTML and render it within a downloadable image (jpg
 <br/>
 
 -------------------------------------------------------------------------------------------
-#### Stack & credits
+### Stack & credits
 
 - ReactJs
 - Bootstrap
