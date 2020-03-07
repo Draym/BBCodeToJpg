@@ -19,6 +19,9 @@ It can convert a BBCode into HTML and render it within a downloadable image (jpg
 
   ? it will be possible to register bbcode tags from the gui in order to expand the parser functionalities.
   
+ - Overview bbcode to jpg preview
+<img src="README-images/bbcode_menu.PNG"> 
+
 <br/>
 
 -------------------------------------------------------------------------------------------
