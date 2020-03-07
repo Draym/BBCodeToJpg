@@ -1,10 +1,10 @@
 import React from 'react';
 import {Container, Col, Row} from 'react-bootstrap';
-import './Home.css';
 import BBCodeTools from "../../utils/BBCodeTools";
 import HtmlTools from "../../utils/HtmlTools";
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import "react-tabs/style/react-tabs.css";
+import './Home.css';
 import Button from "react-bootstrap/Button";
 
 class Home extends React.Component {
@@ -91,7 +91,7 @@ class Home extends React.Component {
                                 </label>
                                 <label className="form-conf">
                                     <span>Add configuration:</span>
-                                    <select value={this.state.config} onChange={this.handleConfigChange}>
+                                    <select className="form-control" value={this.state.config} onChange={this.handleConfigChange}>
                                         <option value="">none</option>
                                         <option value="ogame">Forum</option>
                                         <option value="custom">custom</option>
@@ -102,27 +102,31 @@ class Home extends React.Component {
                                     Custom configuration:
                                     <textarea id="customStyleArea" value={this.state.customStyle} onChange={this.handleCustomStyleChange}/>
                                 </label>
-                                <input className="form-submit btn btn-outline-info" type="submit" value="Generate Jpeg" disabled={!this.state.bbcode}/>
+                                <input className="form-submit btn btn-secondary" type="submit" value="Generate Jpeg" disabled={!this.state.bbcode}/>
                             </form>
                         </Col>
                         <Col>
-                            <Tabs className="previewTab">
-                                <TabList>
-                                    <Tab>HTML</Tab>
-                                    <Tab>Jpeg preview</Tab>
-                                </TabList>
-                                <TabPanel>
-                                    <textarea className="previewHtml" value={this.state.htmlPreview} readOnly/>
-                                </TabPanel>
-                                <TabPanel>
-                                </TabPanel>
-                            </Tabs>
+                            <Row>
+                                <Col>
+                                    <Tabs className="previewTab">
+                                        <TabList>
+                                            <Tab>HTML</Tab>
+                                            <Tab>Jpeg preview</Tab>
+                                        </TabList>
+                                        <TabPanel>
+                                            <textarea className="previewHtml" value={this.state.htmlPreview} readOnly/>
+                                        </TabPanel>
+                                        <TabPanel>
+                                        </TabPanel>
+                                    </Tabs>
+                                </Col>
+                                <Col>
+                                    <Button variant="secondary" className="float-right" type="button"
+                                            style={{visibility: this.state.imageReady ? 'visible' : 'hidden'}}
+                                            onClick={this.createDownloadImage}>Download image</Button>
+                                </Col>
+                            </Row>
                         </Col>
-                    </Row>
-                    <Row>
-                        <Button variant="outline-info" className="right" type="button"
-                                style={{visibility: this.state.imageReady ? 'visible' : 'hidden'}}
-                                onClick={this.createDownloadImage}>Download image</Button>
                     </Row>
                 </Container>
             </div>
