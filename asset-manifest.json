@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/bbcode-to-jpg/static/css/main.0dbc23b6.chunk.css",
+    "main.js": "/bbcode-to-jpg/static/js/main.c60ecccd.chunk.js",
+    "main.js.map": "/bbcode-to-jpg/static/js/main.c60ecccd.chunk.js.map",
+    "runtime-main.js": "/bbcode-to-jpg/static/js/runtime-main.654a86d7.js",
+    "runtime-main.js.map": "/bbcode-to-jpg/static/js/runtime-main.654a86d7.js.map",
+    "static/css/2.333f9b86.chunk.css": "/bbcode-to-jpg/static/css/2.333f9b86.chunk.css",
+    "static/js/2.b5e56155.chunk.js": "/bbcode-to-jpg/static/js/2.b5e56155.chunk.js",
+    "static/js/2.b5e56155.chunk.js.map": "/bbcode-to-jpg/static/js/2.b5e56155.chunk.js.map",
+    "index.html": "/bbcode-to-jpg/index.html",
+    "precache-manifest.66080495758a148e84e46b383de99c70.js": "/bbcode-to-jpg/precache-manifest.66080495758a148e84e46b383de99c70.js",
+    "service-worker.js": "/bbcode-to-jpg/service-worker.js",
+    "static/css/2.333f9b86.chunk.css.map": "/bbcode-to-jpg/static/css/2.333f9b86.chunk.css.map",
+    "static/css/main.0dbc23b6.chunk.css.map": "/bbcode-to-jpg/static/css/main.0dbc23b6.chunk.css.map",
+    "static/js/2.b5e56155.chunk.js.LICENSE.txt": "/bbcode-to-jpg/static/js/2.b5e56155.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.654a86d7.js",
+    "static/css/2.333f9b86.chunk.css",
+    "static/js/2.b5e56155.chunk.js",
+    "static/css/main.0dbc23b6.chunk.css",
+    "static/js/main.c60ecccd.chunk.js"
+  ]
+}
