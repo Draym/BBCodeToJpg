@@ -1,6 +1,12 @@
 {
   "name": "bbcode-to-jpg",
-  "version": "0.1.0",
+  "homepage": "https://draym.github.io/bbcode-to-jpg",
+  "description": "personal website",
+  "author": {
+    "name": "Kevin Andres",
+    "email": "kevin.andres@epitech.eu"
+  },
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "bbcode-to-react": "^0.2.9",
@@ -12,9 +18,13 @@
     "react-scripts": "^3.4.0",
     "react-tabs": "^3.0.0"
   },
+  "devDependencies": {
+    "gh-pages": "^3.2.3"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
